@@ -5,6 +5,7 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let config = require("config-lite")(__dirname);
+let sio = require("socket.io")
 
 let router = require('./routes/index');
 let mongo = require("./mongodb/mongo.js");
@@ -46,6 +47,12 @@ router(app);
 
 //set listening port
 app.listen(config.port);
+
+//catch webSocket
+let io = sio.listen(app)
+io.sockets.on('connection',function(scoket){
+  console.log(scoket)
+})
 
 //close servers
 app.on("close", function (error) {
