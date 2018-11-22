@@ -5,12 +5,12 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 let config = require("config-lite")(__dirname);
-let sio = require("socket.io")
 
 let router = require('./routes/index');
 let mongo = require("./mongodb/mongo.js");
 
 const app = express();
+
 
 
 // uncomment after placing your favicon in /public
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //static resource
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //set Headers
 app.all("*", (req, res, next) => {
@@ -44,15 +44,6 @@ app.all("*", (req, res, next) => {
 
 //set routers
 router(app);
-
-//set listening port
-app.listen(config.port);
-
-//catch webSocket
-let io = sio.listen(app)
-io.sockets.on('connection',function(scoket){
-  console.log(scoket)
-})
 
 //close servers
 app.on("close", function (error) {
@@ -78,6 +69,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//set listening port
+app.listen(config.port);
 
 //connect mongoDB
 mongo.connect(function (error) {
