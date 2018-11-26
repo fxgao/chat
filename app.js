@@ -11,7 +11,24 @@ let mongo = require("./mongodb/mongo.js");
 
 const app = express();
 
+let http = require("http")
+let server = http.Server(app)
+let sio = require("socket.io")
+server.listen(8001,()=>{
+  console.log("websocket listening on*:8001");
+});
 
+//catch webSocket
+let io = sio.listen(server)
+io.sockets.on('connection',function(scoket){
+  scoket.on("login",function(){
+    
+  })
+  scoket.on("message",function(message){
+    console.log(message)
+
+  })
+})
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
