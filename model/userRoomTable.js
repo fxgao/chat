@@ -15,5 +15,5 @@ const userInfoSchema = new Schema({
     room:[roomItem]
 })
 // ContactSchema.index({ModID:1})
-const userInfo = mongoose.model('userRoomTable',userInfoSchema)
-exports.userInfoModel = userInfo
+const userInfo = mongoose.model('userRoomTable', userInfoSchema,'userRoomTables')
+exports.userRoomTableModel = userInfo

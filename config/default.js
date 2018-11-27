@@ -2,7 +2,7 @@ let os = require('os')
 module.exports = {
     hostname: "localhost",
     port: 80,
-    dburl: 'mongodb://127.0.0.1:27017',
+    dburl: 'mongodb://127.0.0.1:27017/chat',
     session: {
         name:'SID',
         secret:'SID',
