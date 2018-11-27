@@ -2,21 +2,24 @@ let mongoose = require('mongoose');
 let moment = require('moment')
 
 const Schema = mongoose.Schema;
+let ObjectId = Schema.ObjectId;
 const chatContentItem = new Schema({
-    contentId : Number,
+    contentId : ObjectId,
     UserId : Number,
     avarvlUrl : String,
     nickName : String,
     time : Number
 })
 const chatContent = new Schema({
-    [contentId]:[chatContentItem]
+    ObjectId:[chatContentItem]
 })
 const chatSchema = new Schema({
     roomId : {type:Number, index:true},
     updateTime : {type:String,default:moment().format('YYYY-MM-DD')},
     chatContent: [chatContent]
 })
-// ContactSchema.index({ModID:1})
-const chatInfo = mongoose.model('chatInfoTable',chatSchema)
+
+const chatInfo = mongoose.model('chatInfoTable',chatSchema,"chatInfoTables")
+const chatContentSchema = chatContent;
+exports.chatContentSchema = chatContentSchema;
 exports.chatInfoModel = chatInfo

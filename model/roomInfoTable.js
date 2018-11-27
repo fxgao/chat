@@ -6,9 +6,9 @@ const roomInfoSchema = new Schema({
     roomId : {type:Number, index:true},
     creater: Number,
     updateTime : {type:String,default:moment().format('YYYY-MM-DD')},
-    type: String,
-    people: Array,
+    type: {type:String,default: 1},
+    people: {type:Array,default: []},
 })
 // ContactSchema.index({ModID:1})
-const roomInfo = mongoose.model('roomInfoTable',roomInfoSchema)
+const roomInfo = mongoose.model('roomInfoTable',roomInfoSchema,"roomInfoTables")
 exports.roomInfoModel = roomInfo
