@@ -12,16 +12,16 @@ let roomInfoTableModel = roomInfoModel.roomInfoModel;
 
 
 function retrunchatInfo(Modules, callBack) {
-    let nRoomId = Modules.roomId;
-    chatInfoTableModel.find({ roomId: nRoomId }, function (err, data) {
+    let nRoomId = Modules[0].roomId;
+    chatInfoTableModel.find({ roomId: nRoomId }, function (err, Modules) {
         if (err) {
             console.error("聊天信息查询失败:" + err);
             return
-        } else if (data.length) {
+        } else if (Modules.length) {
             console.log("聊天数据查询成功！")
             let res = {
                 code: 1,
-                data: data
+                data: Modules
             }
             callBack(res);
         } else {
@@ -93,10 +93,10 @@ function createRoomInfo(parma, callBack) {
                         noticeNum: 0
                     };
                     Modules[0].room = Modules[0].room.concat(newRoomInfo)
-                    userRoomTableModel.update({userId: parma.creater}, Modules[0], function (err, result) {
+                    userRoomTableModel.findOneAndUpdate({ userId: parma.creater }, Modules[0], { new: true }, function (err, result) {
                         let res = {
-                            code:1,
-                            data:result
+                            code: 1,
+                            data: result
                         }
                         if (err) {
                             console.log("更新用户userRoom信息失败:" + err);
@@ -119,7 +119,7 @@ function checkRoomInfoExist(params, callBack) {
     if (nRoomId) {
         searchRoomInfo(params, nRoomId, callBack)
     } else {
-        createRoomInfo(parma, callBack)
+        createRoomInfo(params, callBack)
     }
 }
 

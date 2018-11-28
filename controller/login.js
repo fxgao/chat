@@ -7,7 +7,11 @@ let userRoomTableModel = userRoomModel.userRoomTableModel;
 
 //返回查询到的用户数据函数
 function retrunUserRoomInfo(params, callBack) {
-    callBack(params)
+    let res = {
+        code:1,
+        data: params
+    }
+    callBack(res)
 }
 
 //创建用户userRoomInfo数据函数

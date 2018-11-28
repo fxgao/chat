@@ -3,7 +3,7 @@ let moment = require('moment')
 
 const Schema = mongoose.Schema;
 const roomInfoSchema = new Schema({
-    roomId : {type:Number, index:true},
+    roomId : {type:String, index:true},
     creater: Number,
     updateTime : {type:String,default:moment().format('YYYY-MM-DD')},
     type: {type:String,default: 1},

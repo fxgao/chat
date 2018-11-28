@@ -11,22 +11,23 @@ server.listen(8001, () => {
 let userLogin = require("./../controller/login")
 let Message = require("./../controller/message")
 let RoomExist = require("./../controller/roomExist")
-let sendMessage = Message.sendMessage
+let sendMessage = Message.sendMessage;
 
 //catch webSocket
 let io = sio.listen(server)
-io.sockets.on('connection', function (scoket) {
+io.sockets.on('connection', function (socket) {
 
   //用户接入，触发Login事件，查询用户是否存在
-  scoket.on("login", function (message) {
+  socket.on("login", function (message,fn) {
     userLogin(message,(res) =>{
-      console.log(res)
-      if(res.code == 1 || res.code == 1201){
-        //将用户分入房间分组，便于之后组内广播
-        for(let i=0;i<res.data.room.length;i++){
-          socket.join('room'+res.data.room[i].roomId);
+      if(res.code == 1){
+        if (res.data[0].room.length) {
+          //将用户分入房间分组，便于之后组内广播
+          for (let i = 0; i < res.data[0].room.length; i++) {
+            socket.join('room' + res.data[0].room[i].roomId);
+          }
         }
-        io.to(message.userId).emit("getUserRoomInfo")
+        fn('Login Success!~');
       }else{
         console.log(res.code)
       }
@@ -34,11 +35,12 @@ io.sockets.on('connection', function (scoket) {
   })
 
   //用户发送消息，触发message事件
-  scoket.on("message", function (message) {
+  socket.on("message", function (message) {
     sendMessage(message,(res)=>{
+      console.log(res)
       //用户发送消息成功
       if(res.code == 1 || res.code == 2){
-        socket.broadcast.to('room')
+        socket.broadcast.to('room'+res.roomId)
         io.in("").emit("msgSuccess")
       }else{
         console.log(res.code,res.data)
@@ -46,8 +48,15 @@ io.sockets.on('connection', function (scoket) {
     })
   })
 
+  //用户进入聊天页面，检查是否存在房间
+  socket.on("intoRoom", function (message,fn) {
+    RoomExist(message,(res)=>{
+      fn(res)
+    })
+  })
+
   //用户进入会话
-    scoket.on("createChat",function(message){
+  socket.on("createChat",function(message){
       console.log(message)
       RoomExist(params,(res)=>{
          //用户发送消息成功
