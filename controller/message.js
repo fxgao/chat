@@ -3,12 +3,15 @@ let path = require('path');
 let uuidV1 = require('uuid/v1')
 let moment = require('moment')
 
+let chatExist = require("./chatExist")
 let chatInfoModel = require("./../model/chatInfoTable")
 let chatInfoTableModel = chatInfoModel.chatInfoModel;
 let userRoomModel = require("./../model/userRoomTable")
 let userRoomTableModel = userRoomModel.userRoomTableModel;
 let roomInfoModel = require("./../model/roomInfoTable")
 let roomInfoTableModel = roomInfoModel.roomInfoModel;
+
+
 
 function saveChatInfoTable() {
 
