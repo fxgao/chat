@@ -35,7 +35,7 @@ function createUserRoomInfo(params, callBack) {
 }
 //查询用户是否存在主函数
 function checkUserExist(params, callBack) {
-    userRoomTableModel.find({ userId: parma.userId }, function (err, Modules) {
+    userRoomTableModel.find({ userId: params.userId }, function (err, Modules) {
         if (err) {
             console.error(err);
             return
