@@ -24,6 +24,7 @@ io.sockets.on('connection', function (socket) {
         if (res.data[0].room.length) {
           //将用户分入房间分组，便于之后组内广播
           for (let i = 0; i < res.data[0].room.length; i++) {
+            console.log(res.data[0].room[i].roomId)
             socket.join('room' + res.data[0].room[i].roomId);
           }
         }
@@ -37,11 +38,12 @@ io.sockets.on('connection', function (socket) {
   //用户发送消息，触发message事件
   socket.on("message", function (message) {
     sendMessage(message,(res)=>{
-      console.log(res)
       //用户发送消息成功
-      if(res.code == 1 || res.code == 2){
-        socket.broadcast.to('room'+res.roomId)
-        io.in("").emit("msgSuccess")
+      if(res.code == 1){
+        console.log(res.roomId)
+        //给房间中所有人广播消息
+        io.sockets.in('room' + res.roomId, res.data[0].chatContent[0]).emit("newMessage", res.data[0]);
+        // socket.broadcast.to('room' + res.roomId, res.data[0].chatContent[0]).emit("newMessage", res.data[0])
       }else{
         console.log(res.code,res.data)
       }

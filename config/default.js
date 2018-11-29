@@ -1,4 +1,5 @@
 let os = require('os')
+console.log(os.hostname())
 module.exports = {
     hostname: "localhost",
     port: 80,

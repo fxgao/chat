@@ -26,9 +26,10 @@ function saveMessage(parmas, Modules, callBack) {
             console.log("更新chatInfo信息失败:" + err);
         } else {
             console.log("更新chatInfo信息成功！");
-            chatInfoTableModel.find({ roomId: parmas.roomId, contentId: (parmas.roomId + parmas.time)},function (err,data) {
+            chatInfoTableModel.find({ roomId: parmas.roomId }, { chatContent: { $elemMatch: { contentId: (parmas.roomId + parmas.time) }}},function (err,data) {
                 let res = {
                     code: 1,
+                    roomId: Modules[0].roomId,
                     data: data
                 }
                 callBack(res)
