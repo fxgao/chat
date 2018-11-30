@@ -31,7 +31,7 @@ function createUserRoomInfo(params, callBack) {
             console.log("创建用户userRoom信息成功")
             let res = {
                 code: 1,
-                data: Modules
+                data: [Modules]
             }
             callBack(res)
         }

@@ -28,7 +28,7 @@ io.sockets.on('connection', function (socket) {
             socket.join('room' + res.data[0].room[i].roomId);
           }
         }
-        fn('Login Success!~');
+        fn(res.data[0]);
       }else{
         console.log(res.code)
       }
